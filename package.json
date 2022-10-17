@@ -1,0 +1,24 @@
+{
+  "name": "spaceproject",
+  "version": "1.0.0",
+  "description": "Group project in JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "grabs",
+    "info",
+    "and",
+    "stores",
+    "in",
+    "a",
+    "json",
+    "file"
+  ],
+  "author": "cloak",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

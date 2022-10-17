@@ -1,0 +1,20 @@
+Contains the information of the images stored.
+
+
+4/2/1997
+Clyde W. Tombaugh: 1906-1997
+Credit and Copyright:
+Astronomer Clyde Tombaugh, discoverer of Pluto, died on January 17th. Inspiring many during his long and exceptional career, he had been living in Las Cruces, New Mexico with his wife of 60 years, Patsy. Today would have been his 91st birthday. He is pictured above in 1995 in his backyard with a telescope he knew well - a 9 inch Newtonian reflector he built in 1927 with discarded farm machinery and car parts. Using this telescope under the dark night skies of Western Kansas, he made drawings of Mars and Jupiter and submitted them to Lowell Observatory in 1928. Hired to work at Lowell in 1929, Tombaugh embarked on a systematic photographic search for the long sought Planet X with a newly constructed 13 inch astrograph. In 1930 Tombaugh triumphed in his struggle to find the 9th planet, discovering faint and distant Pluto orbiting at the edge of our Solar System. Founding father of New Mexico State University's Astronomy Department, he retired as professor emeritus in 1973 but continued to tour as a lecturer and promoter until failing health prevented it. Always an active stargazer, he was asked by the Smithsonian if they could have the telescope he used to make his 1928 drawings. His response: "I told them I was still using it."
+Link to the high resolution image: https://apod.nasa.gov/apod/image/9702/tombaugh_beatty.jpg
+
+
+10/17/2022
+X-Ray Rings Around a Gamma Ray Burst
+Why would x-ray rings appear around a gamma-ray burst?  The surprising answer has little to do with the explosion itself but rather with light reflected off areas of dust-laden gas in our own Milky Way Galaxy.  GRB 221009A was a tremendous explosion -- a very bright gamma-ray burst (GRB) that occurred far across the universe with radiation just arriving in our Solar System last week.  Since GRBs can also emit copious amounts of x-rays, a bright flash of x-rays arrived nearly simultaneously with the gamma-radiation. In this case, the X-rays also bounced off regions high in dust right here in our Milky Way Galaxy, creating the unusual reflections. The greater the angle between reflecting Milky Way dust and the GRB, the greater the radius of the X-ray rings, and, typically, the longer it takes for these light-echoes to arrive.
+Link to the high resolution image: https://apod.nasa.gov/apod/image/2210/GrbRings_SwiftMiller_1458.jpg
+
+
+6/20/2005
+Sunset Over Gusev Crater
+What would it be like to see a sunset on Mars?  To help find out, the robotic rover Spirit was deployed last month to park and serenely watch the Sun dip below the distant lip of Gusev crater.  It was a tough job, but some robot had to do it.  Now on Earth a red sunset is caused by two effects -- by blue light being preferentially scattered out of sunlight by oxygen and nitrogen molecules in the atmosphere, and by scattering off a small amount of impurities like volcanic dust.  (The magnitude of the first effect was computed in one of Albert Einstein's most cited papers.) Although Mars lacks oxygen and nitrogen, it is covered in red dust frequently hoisted into the atmosphere by fast but thin winds.  Analyses of images like the above photograph show that at least some Martian days are capped by a sunset significantly longer and redder than typical on Earth.  For up to two hours after twilight, sunlight continued to reflect off Martian dust high in the atmosphere, casting a diffuse glow.  The result helps atmospheric scientists understand not only the atmosphere of Mars, but atmospheres across the Solar System, including our home Earth.
+Link to the high resolution image: https://apod.nasa.gov/apod/image/0506/marssunset_spirit_big.jpg
