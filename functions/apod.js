@@ -74,5 +74,6 @@ module.exports = {
                 appendTxt(date, data);
             });
         }
+        console.log('Success!);
     }
 }
