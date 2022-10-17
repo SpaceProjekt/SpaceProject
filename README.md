@@ -39,3 +39,5 @@ Link to the high resolution image: https://apod.nasa.gov/apod/image/2210/GrbRing
 You guys need to make a GUI to get the input from the user for the date or if the user wants the present day's image or a random one and then display the image, date, information and the link to the image somewhere. Also ask if the user wants to make it his wallpaper and then do it if specified.
 
 ### Other features coming soon
+
+Only 3 more things.
