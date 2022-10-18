@@ -48,4 +48,14 @@ Specify the input in `input.json` like so:
 ```
 `request` takes the value of the three letter abbreviations given to constellations by IAU which are given over [here](https://www.iau.org/public/themes/constellations/) and in the file `constellations.json`. It downloads the image in `./cache/constellations` with the image named after the three letter abbreviations. You just need to display the image and the full name. Examples can be used from `./exampleCache`.
 
+### Launch Data
+Specify the input in `input.json` like so:
+```
+{
+    "type": "launch",
+    "request": "spacex"
+}
+```
+`request` takes one value from the following: nasa, spacex and isro, all in lower case. The data is stored in the `.json` file with the respective name. Only updates if the date of the first entry is less than the current date. The `.json` file stores the name of the launch, rocket and mission name and some other useful data including the image URL. Format and display to user.
+
 ### Other features coming soon

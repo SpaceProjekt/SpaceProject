@@ -46,10 +46,15 @@ module.exports = {
                             let writeData = [];
                             for (let i = 0; i < data.results.length; i++) {
                                 let pushObj = {
-                                    date: data.results[i].window_end,
-                                    name: data.results[i].name,
-                                    rocket: data.results[i].rocket.configuration.full_name,
-                                    mission: data.results[i].mission?.name || "Not specified",
+                                    date: data.results[i]?.window_end,
+                                    name: data.results[i]?.name,
+                                    rocket: data.results[i].rocket.configuration?.full_name,
+                                    mission: data.results[i].mission?.name || "Not specified",                                
+                                    missionDesc: data.results[i].mission?.description || "Not specified",
+                                    padName: data.results[i]?.pad.name,
+                                    padLocation: data.results[i]?.pad.location.name,
+                                    country: data.results[i]?.country_code,
+                                    image: data.results[i]?.image
                                 }
                                 writeData.push(pushObj)
                             }
@@ -63,10 +68,15 @@ module.exports = {
                         let writeData = [];
                         for (let i = 0; i < data.results.length; i++) {
                             let pushObj = {
-                                date: data.results[i].window_end,
-                                name: data.results[i].name,
-                                rocket: data.results[i].rocket.configuration.full_name,
-                                mission: data.results[i].mission?.name || "Not specified",
+                                date: data.results[i]?.window_end,
+                                name: data.results[i]?.name,
+                                rocket: data.results[i].rocket.configuration?.full_name,
+                                mission: data.results[i].mission?.name || "Not specified",                                
+                                missionDesc: data.results[i].mission?.description || "Not specified",
+                                padName: data.results[i]?.pad.name,
+                                padLocation: data.results[i]?.pad.location.name,
+                                country: data.results[i]?.country_code,
+                                image: data.results[i]?.image                                
                             }                            
                             writeData.push(pushObj)
                         }
@@ -83,10 +93,15 @@ module.exports = {
                             let writeData = [];
                             for (let i = 0; i < data.results.length; i++) {
                                 let pushObj = {
-                                    date: data.results[i].window_end,
-                                    name: data.results[i].name,
-                                    rocket: data.results[i].rocket.configuration.full_name,
-                                    mission: data.results[i].mission?.name || "Not specified",
+                                    date: data.results[i]?.window_end,
+                                    name: data.results[i]?.name,
+                                    rocket: data.results[i].rocket.configuration?.full_name,
+                                    mission: data.results[i].mission?.name || "Not specified",                                
+                                    missionDesc: data.results[i].mission?.description || "Not specified",
+                                    padName: data.results[i]?.pad.name,
+                                    padLocation: data.results[i]?.pad.location.name,
+                                    country: data.results[i]?.country_code,
+                                    image: data.results[i]?.image
                                 }
                                 writeData.push(pushObj)
                             }
@@ -100,10 +115,15 @@ module.exports = {
                         let writeData = [];
                         for (let i = 0; i < data.results.length; i++) {
                             let pushObj = {
-                                date: data.results[i].window_end,
-                                name: data.results[i].name,
-                                rocket: data.results[i].rocket.configuration.full_name,
-                                mission: data.results[i].mission?.name || "Not specified",
+                                date: data.results[i]?.window_end,
+                                name: data.results[i]?.name,
+                                rocket: data.results[i].rocket.configuration?.full_name,
+                                mission: data.results[i].mission?.name || "Not specified",                                
+                                missionDesc: data.results[i].mission?.description || "Not specified",
+                                padName: data.results[i]?.pad.name,
+                                padLocation: data.results[i]?.pad.location.name,
+                                country: data.results[i]?.country_code,
+                                image: data.results[i]?.image
                             }
                             writeData.push(pushObj)
                         }
@@ -120,10 +140,15 @@ module.exports = {
                             let writeData = [];
                             for (let i = 0; i < data.results.length; i++) {
                                 let pushObj = {
-                                    date: data.results[i].window_end,
-                                    name: data.results[i].name,
-                                    rocket: data.results[i].rocket.configuration.full_name,
-                                    mission: data.results[i].mission?.name || "Not specified",
+                                    date: data.results[i]?.window_end,
+                                    name: data.results[i]?.name,
+                                    rocket: data.results[i].rocket.configuration?.full_name,
+                                    mission: data.results[i].mission?.name || "Not specified",                                
+                                    missionDesc: data.results[i].mission?.description || "Not specified",
+                                    padName: data.results[i]?.pad.name,
+                                    padLocation: data.results[i]?.pad.location.name,
+                                    country: data.results[i]?.country_code,
+                                    image: data.results[i]?.image
                                 }
                                 writeData.push(pushObj)
                             }
@@ -137,10 +162,15 @@ module.exports = {
                         let writeData = [];
                         for (let i = 0; i < data.results.length; i++) {
                             let pushObj = {
-                                date: data.results[i].window_end,
-                                name: data.results[i].name,
-                                rocket: data.results[i].rocket.configuration.full_name,
-                                mission: data.results[i].mission?.name || "Not specified",
+                                date: data.results[i]?.window_end,
+                                name: data.results[i]?.name,
+                                rocket: data.results[i].rocket.configuration?.full_name,
+                                mission: data.results[i].mission?.name || "Not specified",                                
+                                missionDesc: data.results[i].mission?.description || "Not specified",
+                                padName: data.results[i]?.pad.name,
+                                padLocation: data.results[i]?.pad.location.name,
+                                country: data.results[i]?.country_code,
+                                image: data.results[i]?.image
                             }
                             writeData.push(pushObj)
                         }
