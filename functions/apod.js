@@ -74,6 +74,6 @@ module.exports = {
                 appendTxt(date, data);
             });
         }
-        console.log('Success!);
+        console.log('Success!');
     }
 }
