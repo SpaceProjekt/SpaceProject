@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const https = require('https');
 const fs = require('fs');
 const constList = require('../constellations.json');
+const config = require('../config.json')
 
 module.exports = {
     async execute(constellation) {
@@ -20,10 +21,8 @@ module.exports = {
                 return response.ok ? json : Promise.reject(json);
             });
         }
-        if (!fs.existsSync(`./cache/constellations/${constellation}.png`)) {
-            let applicationId = '0dcbdb7a-dd68-46f9-a8be-22ddda3ed4ca'
-            let applicationSecret = '481c26c9df9b00aa3d31d4f0878bf7bf38a5aa729425f726fdee4ec874b0bf80f3d838ae8dd1663809487cc0f12981ea1435b64ebf769148e1839d8ea1b1f63dfa86dab73e0c81d2c4903c904ac99f6b0452f93f7742c840eb26bc42b9d5c81c73e7f1c95bcabe3e3e0cb4667b957734'
-            const hash = btoa(`${applicationId}:${applicationSecret}`)
+        if (!fs.existsSync(`./cache/constellations/${constellation}.png`)) {            
+            const hash = btoa(`${config.astroID}:${config.astroSecret}`)
             const parameters = {};
             parameters["constellation"] = constellation
             let data = JSON.stringify({
