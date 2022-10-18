@@ -85,6 +85,6 @@ module.exports = {
                 appendTxt(date, data);
             });
         }
-        return console.log('Success!')
+        return console.log('Success!');
     }
 }
