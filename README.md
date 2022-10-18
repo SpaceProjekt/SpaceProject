@@ -26,7 +26,7 @@ You just need to add the parameters to the json file like so to make a request:
 ```
 {
     "type": "apod",
-    "request": "" (can take in values like "today", "random" and a UNIX timestamp in double quotes only, single quotes dont work)
+    "request": "" (can take in values like "today" (default value), "random" and a UNIX timestamp in double quotes only, single quotes dont work)
 }
 ```
 Saves a `.png` file in the `cache` (use `exampleCache` for your testing) directory along with the information with the date in the format
