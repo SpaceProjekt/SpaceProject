@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const https = require('https');
 const fs = require('fs');
+const config = require('../config.json')
 
 module.exports = {
     async execute(input) {
@@ -25,7 +26,7 @@ module.exports = {
             let utc = dateHere.getTime() + (dateHere.getTimezoneOffset() * 60000);
             date = new Date(utc + (3600000 * -5));
             dateNow = date.toLocaleDateString().replace(/\//g, '-');
-            url = `https://api.nasa.gov/planetary/apod?api_key=a6KdMt9R3inCtISa9hJnWIED14j7A2PcJN588dF0`
+            url = `https://api.nasa.gov/planetary/apod?api_key=${config.nasa}`
         } else if (input === 'random') {
             let dateHere = new Date(Math.floor(Math.random() * (Date.now() - 803592000 * 1000)) + 803592000 * 1000);
             let utc = dateHere.getTime() + (dateHere.getTimezoneOffset() * 60000);
@@ -36,7 +37,7 @@ module.exports = {
             if (a[0].length === 1) a[0] = '0'+ a[0];
             [a[0], a[1]] = [a[1], a[0]]           
             dateNow = a.join("-");            
-            url = `https://api.nasa.gov/planetary/apod?date=${dateNow.split("-").reverse().join("-")}&api_key=a6KdMt9R3inCtISa9hJnWIED14j7A2PcJN588dF0`
+            url = `https://api.nasa.gov/planetary/apod?date=${dateNow.split("-").reverse().join("-")}&api_key=${config.nasa}`
         } else {
             if (parseInt(input) > Date.now() || parseInt(input) < 803592000 * 1000) {
                 return console.log('Invalid input.')
@@ -50,7 +51,7 @@ module.exports = {
             if (a[0].length === 1) a[0] = '0' + a[0];
             [a[0], a[1]] = [a[1], a[0]]            
             dateNow = a.join("-");
-            url = `https://api.nasa.gov/planetary/apod?date=${dateNow.split("-").reverse().join("-")}&api_key=a6KdMt9R3inCtISa9hJnWIED14j7A2PcJN588dF0`
+            url = `https://api.nasa.gov/planetary/apod?date=${dateNow.split("-").reverse().join("-")}&api_key=${config.nasa}`
         }
 
         if (!fs.existsSync(`./cache/apod/${dateNow}.png`)) {               
