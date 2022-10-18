@@ -36,7 +36,7 @@ X-Ray Rings Around a Gamma Ray Burst
 Why would x-ray rings appear around a gamma-ray burst?  The surprising answer has little to do with the explosion itself but rather with light reflected off areas of dust-laden gas in our own Milky Way Galaxy.  GRB 221009A was a tremendous explosion -- a very bright gamma-ray burst (GRB) that occurred far across the universe with radiation just arriving in our Solar System last week.  Since GRBs can also emit copious amounts of x-rays, a bright flash of x-rays arrived nearly simultaneously with the gamma-radiation. In this case, the X-rays also bounced off regions high in dust right here in our Milky Way Galaxy, creating the unusual reflections. The greater the angle between reflecting Milky Way dust and the GRB, the greater the radius of the X-ray rings, and, typically, the longer it takes for these light-echoes to arrive.
 Link to the high resolution image: https://apod.nasa.gov/apod/image/2210/GrbRings_SwiftMiller_1458.jpg
 ```
-You guys need to make a GUI to get the input from the user for the date or if the user wants the present day's image or a random one and then display the image, date, information and the link to the image somewhere. Also ask if the user wants to make it his wallpaper and then do it if specified.
+You guys need to make a GUI to get the input from the user for the date or if the user wants the present day's image or a random one and then display the image, date, information and the link to the image somewhere. Also ask if the user wants to make it his wallpaper and then do it if specified. The date specified needs to be converted into a [UNIX timestamp](https://www.unixtimestamp.com/). 
 
 ### Other features coming soon
 
