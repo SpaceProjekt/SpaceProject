@@ -7,7 +7,7 @@ module.exports = {
     async execute(input) {
         let responseData, date, dateNow, url;        
         if (!fs.existsSync('./cache/apod')) {
-            fs.mkdirSync('./cache/apod')
+            fs.mkdirSync('./cache/apod');
         };
         function appendTxt(date, responseData) {
             fs.appendFileSync('./cache/apod/info.txt', `\n\n\n${date.toLocaleString({ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n${responseData.title}\n${responseData.explanation}\nLink to the high resolution image: ${responseData.hdurl}`, function (err) {
@@ -35,7 +35,7 @@ module.exports = {
             dateNow = date.toLocaleDateString().replace(/\//g, '-');            
             let a = dateNow.split('-')
             if (a[0].length === 1) a[0] = '0'+ a[0];
-            [a[0], a[1]] = [a[1], a[0]]           
+            if (a[1].length === 1) a[1] = '0' + a[1];
             dateNow = a.join("-");            
             url = `https://api.nasa.gov/planetary/apod?date=${dateNow.split("-").reverse().join("-")}&api_key=${config.nasa}`
         } else {
@@ -48,8 +48,8 @@ module.exports = {
             if (date < 803592000 * 1000) date = new Date(803592000 * 1000);
             dateNow = date.toLocaleDateString().replace(/\//g, '-');
             let a = dateNow.split('-')
-            if (a[0].length === 1) a[0] = '0' + a[0];
-            [a[0], a[1]] = [a[1], a[0]]            
+            if (a[0].length === 1) a[0] = '0' + a[0];     
+            if (a[1].length === 1) a[1] = '0' + a[1];
             dateNow = a.join("-");
             url = `https://api.nasa.gov/planetary/apod?date=${dateNow.split("-").reverse().join("-")}&api_key=${config.nasa}`
         }
@@ -75,7 +75,8 @@ module.exports = {
                 file.on("finish", () => {
                     file.close();
                 });
-            });            
+            });
+            return console.log('Success!');
         } else if (!fs.readFileSync('./cache/apod/info.txt', 'utf-8').includes(`${dateNow.replace(/\-/g, '/')}`)) {
             if (fs.readFileSync('./cache/apod/info.txt', 'utf-8').length === 0) {
                 fs.writeFileSync('./cache/apod/info.txt', 'Contains the information of the images stored.', function (err) {

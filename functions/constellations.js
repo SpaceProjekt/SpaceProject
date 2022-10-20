@@ -14,7 +14,7 @@ module.exports = {
             constNames.push(`${constList[i].abbr.toLocaleLowerCase()}`)
         }
         if (!constNames.includes(constellation)) {
-            return console.log('Invalid input. No such constellation found.')
+            return console.log('Invalid input.')
         }
         function handleResponse(response) {
             return response.json().then(function (json) {
