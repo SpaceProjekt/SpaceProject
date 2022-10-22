@@ -44,35 +44,36 @@ def main():
         bg2 = ImageTk.PhotoImage(Image.open(f"{path}/assets/tkbg.jpg"))
         labelC = Label(constWin, image = bg2)
         labelC.place(x=0, y=0, relwidth=1, relheight=1)
-        c2.pack()      
+        c2.pack()
+        emptyVar = ''
 
         with open(f'{path}/exampleCache/input.json','w') as myj:            
             data = {
                 "type": "const",
-                "request": f"{input}"
+                "request": f"{emptyVar}"
             }
             json.dump(data,myj,indent=4)  
             myj.truncate()
 
         constWin.mainloop()
 
-    AP = tk.Button(root, text='APOD', bg='#6495ED', width = 50)
+    AP = tk.Button(root, text='APOD', bg='#6495ED')
     AP.place(x=680, y=400, width=70)
 
-    CON = tk.Button(root, text='Constellations', bg='#6495ED', command=constPack, width = 50)
+    CON = tk.Button(root, text='Constellations', bg='#6495ED', command=constPack)
     myfont=font.Font(size=9)
     CON.place(x=52,y=400,width=125)
     CON['font']=myfont
 
-    LDATA = tk.Button(root, text='Launch Data', bg='#6495ED', width=50)
+    LDATA = tk.Button(root, text='Launch Data', bg='#6495ED')
     LDATA.place(x=271,y=400,width=100)
     LDATA['font']=myfont    
 
-    SP=tk.Button(root, text="Space Invaders",bg='#6495ED', command = lambda: spaceGame(root), width = 50)
+    SP=tk.Button(root, text="Space Invaders",bg='#6495ED', command = lambda: spaceGame(root))
     SP.place(x=465,y=400,width=125)
     SP['font']=myfont
 
-    QBTN = tk.Button(root, text="QUIT", bg="#6495ED", command=quit, width=50)
+    QBTN = tk.Button(root, text="Quit", bg="#6495ED", command=quit)
     QBTN.place(x=385,y=460,width=70)
     QBTN['font']=myfont
 
