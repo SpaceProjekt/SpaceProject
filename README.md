@@ -19,7 +19,7 @@ Due to lack of active members and time, this project does not have all the featu
 
 ### APOD
 
-Uses the NASA API for APOD (Astronomy Picture Of The Day) which is like the Instagram for the universe. [APOD](https://apod.nasa.gov/apod/astropix.html)
+Uses the NASA API for APOD (Astronomy Picture Of The Day) which is like the Instagram for the universe: [as seen here](https://apod.nasa.gov/apod/astropix.html)
 The downloaded images are stored in `cache/apod` for future access and the image data is stored in `cache/apod/info.txt`.
 
 The user can enter a custom date between June 20, 1995 to the present date to get the image instead of getting a random or the present day's image.
