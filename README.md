@@ -13,6 +13,8 @@ To run this program, the following are needed:
 ```
 The npm modules can be installed via the command `npm install` and the python dependencies can be installed via the command `pip install -r requirements.txt`. The main python file is placed in the `python` folder named `main.pyw` which will show you an intuitive GUI.
 
+An example for the `config.json` file is given in `example.config.json`. You will need a NASA api key which can be received from [here](https://api.nasa.gov/).
+
 ## Features
 
 Due to lack of active members and time, this project does not have all the features which were meant to be present. Some of them are unfinished such as the Keplerian orbit plotter.
