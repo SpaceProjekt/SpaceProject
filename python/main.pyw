@@ -48,10 +48,62 @@ def main():
         def submit():
             constVar = constVarTk.get()
             fetch(constVar)
+        def show1():
+            constInfoWin = tk.Tk()
+            constInfoWin.title('Constellation Information.')
+            constInfoWin.geometry = ('2000x800')
+            with open(f'{path}/constellations.json') as c2:
+                constInfo = json.load(c2)
+                for i in range(len(constInfo) - 44):
+                    for j in range(len(list(constInfo[i].values()))):
+                        if i == 0:
+                            eT = tk.Entry(constInfoWin, width=30, fg='black', font=('Calibri Light', 12))
+                            eT.grid(row=i, column=j)
+                            if j == 0:                                
+                                eT.insert(END, 'Abbreviation')
+                            elif j == 1:
+                                eT.insert(END, 'Name')
+                            elif j == 2:
+                                eT.insert(END, 'Genitive Name')
+                            elif j == 3:
+                                eT.insert(END, 'English Name')
+                        e = tk.Entry(constInfoWin, width=30, fg='blue', font=('Calibri Light', 12))
+                        e.grid(row = i + 1, column= j)
+                        e.insert(END, list(constInfo[i].values())[j])                   
+            constInfoWin.mainloop()
+        
+        def show2():
+            constInfoWin2 = tk.Tk()
+            constInfoWin2.title('Constellation Information.')
+            constInfoWin2.geometry = ('2000x800')
+            with open(f'{path}/constellations.json') as c2:
+                constInfo = json.load(c2)
+                for i in range(44, len(constInfo)):                    
+                    for j in range(len(list(constInfo[i].values()))):                        
+                        if i == 44:
+                            eT = tk.Entry(constInfoWin2, width=30, fg='black', font=('Calibri Light', 12))
+                            eT.grid(row=i, column=j)
+                            if j == 0:                                
+                                eT.insert(END, 'Abbreviation')
+                            elif j == 1:
+                                eT.insert(END, 'Name')
+                            elif j == 2:
+                                eT.insert(END, 'Genitive Name')
+                            elif j == 3:
+                                eT.insert(END, 'English Name')
+                        e = tk.Entry(constInfoWin2, width=30, fg='blue', font=('Calibri Light', 12))
+                        e.grid(row = i + 1, column= j)
+                        e.insert(END, list(constInfo[i].values())[j])                     
+            constInfoWin2.mainloop()
         sub_btn = tk.Button(constWin, text='Submit', command=submit)
         sub_btn.place(x=150, y=200)
-        label2 = tk.Entry(constWin, textvariable=constVarTk, width=50)
+        show_btn = tk.Button(constWin, text = 'Show Constellation Details [Part 1]', command = show1)
+        show_btn.place(x=250, y=200)
+        show_btn2 = tk.Button(constWin, text = 'Show Constellation Details [Part 2]', command = show2)
+        show_btn2.place(x=250, y=230)
+        label2 = tk.Entry(constWin, textvariable=constVarTk, width=50, font=('Calibri Light', 12), fg = 'azure4')
         label2.place(x=150, y=150)
+        label2.insert(END, 'Enter the constellation abbreviations here.')
         c2.pack()
         def fetch(constVar):
             with open(f'{path}/constellations.json') as c1:
@@ -89,10 +141,10 @@ def main():
                             constImg=tk.Tk()
                             global bg4
                             bg4 = ImageTk.PhotoImage(Image.open(f"{path}/cache/constellations/{constVar.upper()}.gif"))
-                            c3 = Canvas(constImg, bg='black', height=bg3.height(), width=bg3.width())
-                            constImg.geometry = (f'{bg3.width}x{bg3.height}')
+                            c3 = Canvas(constImg, bg='black', height=bg4.height(), width=bg4.width())
+                            constImg.geometry = (f'{bg4.width}x{bg4.height}')
                             constImg.title(f'Constellation: {constVar.upper()}')
-                            label3=Label(constImg, image=bg3)
+                            label3=Label(constImg, image=bg4)
                             label3.place(x=0, y=0, relwidth=1, relheight=1)
                             c3.pack()
         constWin.mainloop()
