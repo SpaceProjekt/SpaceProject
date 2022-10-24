@@ -1,9 +1,13 @@
-import os, json, spaceInvaders, subprocess
+import os, json, spaceInvaders, subprocess, pytz
 import tkinter as tk
 from tkinter import *
 import tkinter.font as font
 from PIL import ImageTk, Image
 from time import sleep
+from datetime import datetime
+from PIL import ImageFile
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def win(root):
     root.geometry('800x533')
@@ -24,12 +28,128 @@ def main():
     del(a[-1])
     path = '/'.join(a)
     bg1= ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
-    label1 = Label( root, image = bg1)
+    label1 = tk.Label( root, image = bg1)
     label1.place(x = 0, y = 0 ,relwidth=1, relheight=1)
-    txt=Label(root, text='MAIN MENU', font='Helvetica 18', bg='#6495ED')
+    txt=tk.Label(root, text='MAIN MENU', font='Helvetica 18', bg='#6495ED')
     txt.pack(ipadx= 30, ipady=20)
 
     c.pack()
+
+    # APOD functions
+
+    def apodPack():
+        apod()
+        main()
+
+    def apod():
+        root.destroy()
+        apodWin = tk.Tk()
+        apodC = tk.Canvas(apodWin, height = 533, width = 800)
+        bg2 = ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
+        apodWin.geometry('800x533')
+        apodWin.title('APOD - Astronomy Picture Of The Day')               
+        labelC = Label(apodWin, image=bg2)
+        labelC.place(x=0, y=0, relwidth=1, relheight=1)
+
+        yearVarTk = tk.StringVar()
+        monthVarTk = tk.StringVar()
+        dayVarTk = tk.StringVar()
+
+        def submit():            
+            try:
+                yearVar = int(yearVarTk.get())
+                monthVar = int(monthVarTk.get())
+                dayVar = int(dayVarTk.get())
+                if yearVar*monthVar*dayVar == 0:
+                    return
+                if os.path.isfile(f'{path}/cache/{dayVar}-{monthVar}-{yearVar}.png'):
+                    return 1
+                else:                    
+                    from datetime import datetime
+                    from time import mktime
+                    date_time = datetime(yearVar, monthVar, dayVar, 0, 0)
+                    unix = int(mktime(date_time.timetuple()))                    
+                    fetch(unix*1000)
+            except ValueError or TypeError:
+                return
+
+        def fetch(data):            
+            with open(f'{path}/cache/input.json', 'w') as inpJ:
+                json.dump({
+                    "type": "apod",
+                    "request": f"{data}"
+                }, inpJ, indent=4)
+                inpJ.truncate()
+                output = subprocess.run('node .', capture_output=True).stdout
+                sleep(5)
+                output = output.decode("utf-8")
+                output = output.split('\n')
+                if output[0] == 'Success!':
+                    apodWin.destroy()
+                    apodImgDis = tk.Tk()
+                    dateNow = output[1].split('-')
+                    dateNow.reverse()
+                    dateNow = '-'.join(dateNow)
+                    apodImgDis.title('APOD - Astronomy Picture Of The Day')
+                    global img
+                    img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
+                    apodImgDis.geometry(f'{img.width()}x{img.height()}')
+                    apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())                    
+                    labelA = tk.Label(apodImgDis, image=img)
+                    labelA.place(x=0, y=0, relwidth=1, relheight=1)
+                    apodC2.pack()
+                    with open(f'{path}/cache/apod/info.txt') as readObj:
+                        description = readObj.read().split('\n\n\n')
+                        dateNow = dateNow.split('-')
+                        dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
+                        if (dateNow[0].startswith('0')): dateNow[0] = dateNow[0][1]
+                        if (dateNow[1].startswith('0')): dateNow[1] = dateNow[1][1]
+                        tempDate = '/'.join(dateNow)
+                        print(tempDate)
+                        for i in description:
+                            if i.startswith(f'{tempDate}'):
+                                finalDes = i.split('\n')
+                                apodImgDes = tk.Toplevel(apodImgDis)
+                                apodImgDes.title(finalDes[1])                                
+                                apodImgDes.geometry('800x333')
+                                imgDes = tk.Canvas(apodImgDes, height=333, width=600)
+                                imgDes.configure(bg='#5C5C5C')
+                                desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
+                                desLabel.place(x=0, y=0, relwidth=1, relheight=1)
+                                imgDes.pack()                                
+                    apodImgDis.mainloop()                    
+
+        def today():
+            vgA = pytz.timezone('America/Virgin')
+            todayTime = datetime.now(vgA)
+            searchDate = todayTime.strftime('%d:%m%Y')
+            if os.path.isfile(f'{path}/cache/{searchDate}.png'):
+                return 1
+            else:
+                fetch('today')
+        
+        def randomImg():            
+            fetch('random')
+
+        show_btn = tk.Button(apodWin, text = 'Today', command = today)
+        show_btn.place(x=350, y=200)
+        show_btn2 = tk.Button(apodWin, text = 'Random Day', command = randomImg)
+        show_btn2.place(x=450, y=200)
+        label2 = tk.Entry(apodWin, textvariable=yearVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4')
+        label2.place(x=150, y=150)
+        label2.insert(END, 'Year')
+        label3 = tk.Entry(apodWin, textvariable=monthVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4')
+        label3.place(x=210, y=150)
+        label3.insert(END, 'Month')
+        label4 = tk.Entry(apodWin, textvariable=dayVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4')
+        label4.place(x=270, y=150)
+        label4.insert(END, 'Day')
+        sub_btn = tk.Button(apodWin, text='Submit the specific date', command=submit)
+        sub_btn.place(x=150, y=200)        
+        apodC.pack()
+        apodWin.mainloop()
+
+    #Constellation functions
 
     def constPack():
         CONST()
@@ -52,8 +172,8 @@ def main():
             constInfoWin = tk.Tk()
             constInfoWin.title('Constellation Information.')
             constInfoWin.geometry = ('2000x800')
-            with open(f'{path}/constellations.json') as c2:
-                constInfo = json.load(c2)
+            with open(f'{path}/constellations.json') as constJ:
+                constInfo = json.load(constJ)
                 for i in range(len(constInfo) - 44):
                     for j in range(len(list(constInfo[i].values()))):
                         if i == 0:
@@ -76,8 +196,8 @@ def main():
             constInfoWin2 = tk.Tk()
             constInfoWin2.title('Constellation Information.')
             constInfoWin2.geometry = ('2000x800')
-            with open(f'{path}/constellations.json') as c2:
-                constInfo = json.load(c2)
+            with open(f'{path}/constellations.json') as constJ:
+                constInfo = json.load(constJ)
                 for i in range(44, len(constInfo)):                    
                     for j in range(len(list(constInfo[i].values()))):                        
                         if i == 44:
@@ -141,15 +261,17 @@ def main():
                             constImg=tk.Tk()
                             global bg4
                             bg4 = ImageTk.PhotoImage(Image.open(f"{path}/cache/constellations/{constVar.upper()}.gif"))
-                            c3 = Canvas(constImg, bg='black', height=bg4.height(), width=bg4.width())
+                            c3 = tk.Canvas(constImg, bg='black', height=bg4.height(), width=bg4.width())
                             constImg.geometry = (f'{bg4.width}x{bg4.height}')
                             constImg.title(f'Constellation: {constVar.upper()}')
-                            label3=Label(constImg, image=bg4)
+                            label3=tk.Label(constImg, image=bg4)
                             label3.place(x=0, y=0, relwidth=1, relheight=1)
                             c3.pack()
         constWin.mainloop()
 
-    AP = tk.Button(root, text='APOD', bg='#6495ED')
+    # Buttons for commands
+
+    AP = tk.Button(root, text='APOD', bg='#6495ED', command = apodPack)
     f=font.Font(family='Comicsans',weight='bold')
     AP.place(x=335, y=200, width=130, height=47)
     AP['font']=f

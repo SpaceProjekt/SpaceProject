@@ -1,8 +1,6 @@
-const fetch = require('node-fetch');
 const https = require('https');
 const fs = require('fs');
 const constList = require('../constellations.json');
-const config = require('../config.json')
 
 module.exports = {
     async execute(constellation) {        
