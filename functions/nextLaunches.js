@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
-const config = require('../config.json');
 
 module.exports = {
     async execute(input) {
@@ -32,9 +31,10 @@ module.exports = {
                 }))
             }
             
-            function updateLimit(limit) {
+            function updateLimit() {
                 let limitData = JSON.parse(fs.readFileSync('./cache/launches/limit.json'))
-                limitData.left = limit.left - 1
+                const newLim = require('../cache/launches/limit.json')
+                limitData.left = newLim.left - 1
                 fs.writeFileSync('./cache/launches/limit.json', JSON.stringify(limitData))
             }
 
@@ -60,9 +60,11 @@ module.exports = {
                             }
                             fs.writeFileSync('./cache/launches/nasa.json', JSON.stringify(writeData))
                             console.log('Success!')
-                            updateLimit(limit);
+                            updateLimit();
                         })
-                    }                                      
+                    } else if (Date.parse(jsonData[0].date) > Date.now()) {
+                        return console.log('Success!')
+                    }                               
                 } else if (!fs.existsSync('./cache/launches/nasa.json') || (fs.existsSync('./cache/launches/nasa.json') && fs.readFileSync('./cache/launches/nasa.json').length === 0)) {
                     await fetch('https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=NASA').then(handleResponse).then(data => {                        
                         let writeData = [];
@@ -82,7 +84,7 @@ module.exports = {
                         }
                         fs.writeFileSync('./cache/launches/nasa.json', JSON.stringify(writeData));
                         console.log('Success!');
-                        updateLimit(limit);
+                        updateLimit();
                     })
                 }
             } else if (input === 'spacex') {
@@ -107,8 +109,10 @@ module.exports = {
                             }
                             fs.writeFileSync('./cache/launches/spacex.json', JSON.stringify(writeData));
                             console.log('Success!');
-                            updateLimit(limit);
+                            updateLimit();
                         })
+                    } else if (Date.parse(jsonData[0].date) > Date.now()) {
+                        return console.log('Success!')
                     }
                 } else if (!fs.existsSync('./cache/launches/spacex.json') || (fs.existsSync('./cache/launches/spacex.json') && fs.readFileSync('./cache/launches/spacex.json').length === 0)) {
                     await fetch('https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=SpaceX').then(handleResponse).then(data => {
@@ -129,7 +133,7 @@ module.exports = {
                         }
                         fs.writeFileSync('./cache/launches/spacex.json', JSON.stringify(writeData));
                         console.log('Success!')
-                        updateLimit(limit);
+                        updateLimit();
                     })
                 }
             } else if (input === 'isro') {
@@ -154,8 +158,10 @@ module.exports = {
                             }
                             fs.writeFileSync('./cache/launches/isro.json', JSON.stringify(writeData))
                             console.log('Success!')
-                            updateLimit(limit);
+                            updateLimit();
                         })
+                    } else if (Date.parse(jsonData[0].date) > Date.now()) {
+                        return console.log('Success!')
                     }
                 } else if (!fs.existsSync('./cache/launches/isro.json') || (fs.existsSync('./cache/launches/isro.json') && fs.readFileSync('./cache/launches/isro.json').length === 0)) {
                     await fetch('https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=ISRO').then(handleResponse).then(data => {
@@ -176,7 +182,7 @@ module.exports = {
                         }
                         fs.writeFileSync('./cache/launches/isro.json', JSON.stringify(writeData));
                         console.log('Success!')
-                        updateLimit(limit);
+                        updateLimit();
                     })
                 }
             }

@@ -1,11 +1,11 @@
-import os, json, spaceInvaders, subprocess, pytz
+import os, json, spaceInvaders, subprocess, pytz, pyglet, textwrap
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 import tkinter.font as font
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image, ImageFile
 from time import sleep
 from datetime import datetime
-from PIL import ImageFile
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -187,9 +187,10 @@ def main():
                                 eT.insert(END, 'Genitive Name')
                             elif j == 3:
                                 eT.insert(END, 'English Name')
-                        e = tk.Entry(constInfoWin, width=30, fg='blue', font=('Calibri Light', 12))
-                        e.grid(row = i + 1, column= j)
-                        e.insert(END, list(constInfo[i].values())[j])                   
+                        else:
+                            e = tk.Entry(constInfoWin, width=30, fg='blue', font=('Calibri Light', 12))
+                            e.grid(row = i + 1, column= j)
+                            e.insert(END, list(constInfo[i].values())[j])                   
             constInfoWin.mainloop()
         
         def show2():
@@ -211,9 +212,10 @@ def main():
                                 eT.insert(END, 'Genitive Name')
                             elif j == 3:
                                 eT.insert(END, 'English Name')
-                        e = tk.Entry(constInfoWin2, width=30, fg='blue', font=('Calibri Light', 12))
-                        e.grid(row = i + 1, column= j)
-                        e.insert(END, list(constInfo[i].values())[j])                     
+                        else: 
+                            e = tk.Entry(constInfoWin2, width=30, fg='blue', font=('Calibri Light', 12))
+                            e.grid(row = i + 1, column= j)
+                            e.insert(END, list(constInfo[i].values())[j])                     
             constInfoWin2.mainloop()
         sub_btn = tk.Button(constWin, text='Submit', command=submit)
         sub_btn.place(x=150, y=200)
@@ -269,27 +271,131 @@ def main():
                             c3.pack()
         constWin.mainloop()
 
+    # Launch Data Visualisation
+
+    def launchPack():
+        launchData()
+        main()
+
+    def launchData():
+        root.destroy()
+        launchDWin = tk.Tk()
+        c2 = Canvas(launchDWin, bg='gray16', height=533, width=800)
+        launchDWin.geometry = ('800x533')
+        launchDWin.title('Launch Data')
+        bg2 = ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
+        labelC = Label(launchDWin, image=bg2)
+        labelC.place(x=0, y=0, relwidth=1, relheight=1)
+        pyglet.font.add_file(f'{path}/python/assets/font.ttf')
+
+        def fetch(data):
+            with open(f'{path}/cache/input.json', 'w') as inpJ:
+                json.dump({
+                    "type": "launch",
+                    "request": f"{data}"
+                }, inpJ, indent = 4)
+                inpJ.truncate()
+                output= subprocess.run('node .',capture_output=True).stdout
+                sleep(4)
+                output = output.decode("utf-8")
+                if output == 'Success!\n':
+                    with open(f'{path}/cache/launches/{data}.json') as launchJ:
+                        dataLaunch = json.load(launchJ)
+                        launchDWin.destroy()
+                        launchInfoWin = tk.Tk()
+
+                        # Fullscreen functions
+                        state = False
+                        def toggle(state, launchInfoWin):                            
+                            state = not state
+                            launchInfoWin.attributes("-fullscreen", state)
+                            return "break"
+                        def disable(launchInfoWin):
+                            launchInfoWin.attributes("-fullscreen", False)
+                            return "break"
+                        launchInfoWin.bind("<Escape>", lambda event, launchInfoWin = launchInfoWin: disable(launchInfoWin))
+                        launchInfoWin.bind("<F11>", lambda event, state = state, launchInfoWin = launchInfoWin: toggle(state, launchInfoWin))
+                        
+                        launchInfoWin.geometry('1755x1040')
+                        if data == 'spacex':
+                            launchInfoWin.title('Launch Data for SpaceX')
+                        else:
+                            launchInfoWin.title(f'Launch Data for {data.upper()}')
+                        tree = ttk.Treeview(launchInfoWin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"), show='headings')
+                        s = ttk.Style()
+                        s.configure('Treeview', rowheight = 104)                        
+                        
+                        tree.column('c1', width = 125)
+                        tree.column('c2', width = 225)
+                        tree.column('c3', width = 170)
+                        tree.column('c4', width = 170)
+                        tree.column('c5', width = 380)
+                        tree.column('c6', width = 165)
+                        tree.column('c7', width = 180)
+                        tree.column('c8', width = 340)
+
+                        tree.heading('c1', text = 'Date')
+                        tree.heading('c2', text = 'Name')
+                        tree.heading('c3', text = 'Rocket')
+                        tree.heading('c4', text = 'Mission Name')
+                        tree.heading('c5', text = 'Mission Description')
+                        tree.heading('c6', text = 'Launch Pad Name')
+                        tree.heading('c7', text = 'Launch Pad Location')
+                        tree.heading('c8', text = 'Image Link')                        
+                        def wrap(string, length=70):
+                            return '\n'.join(textwrap.wrap(string, length))
+                        for i in range(len(dataLaunch)):
+                            arrayInfo = list(dataLaunch[i].values())
+                            for j in range(len(arrayInfo)):
+                                arrayInfo[j] = wrap(arrayInfo[j])                                
+                            tree.insert("", "end", values = (arrayInfo))
+                        tree.grid(row = 0, column = 0)
+
+
+        def nasa():
+            fetch('nasa')
+
+        def isro():
+            fetch('isro')
+
+        def spaceX():
+            fetch('spacex')
+
+        # Buttons
+        f = font.Font(family = 'Roboto Slab')
+        nasa = tk.Button(launchDWin, text = 'NASA', bg = '#6495ED', command = nasa)
+        nasa.place(x = 330, y = 100, width = 130, height = 50)
+        nasa['font'] = f
+        isro = tk.Button(launchDWin, text = 'ISRO', bg = '#6495ED', command = isro)
+        isro.place(x = 330, y = 170, width = 130, height = 50)
+        isro['font'] = f
+        spaceX = tk.Button(launchDWin, text='SpaceX', bg='#6495ED', command = spaceX)
+        spaceX.place(x=330, y=240, width=130, height=50)
+        spaceX['font'] = f
+        c2.pack()
+        launchDWin.mainloop()
+
     # Buttons for commands
 
-    AP = tk.Button(root, text='APOD', bg='#6495ED', command = apodPack)
-    f=font.Font(family='Comicsans',weight='bold')
-    AP.place(x=335, y=200, width=130, height=47)
+    AP = tk.Button(root, text = 'APOD', bg = '#6495ED', command = apodPack)
+    f=font.Font(family = 'Comicsans',weight = 'bold')
+    AP.place(x=330, y=150, width=130, height=50)
     AP['font']=f
 
-    CON = tk.Button(root, text='Constellations', bg='#6495ED', command=constPack)
-    CON.place(x=335,y=270,width=130, height=50)
+    CON = tk.Button(root, text = 'Constellations', bg = '#6495ED', command = constPack)
+    CON.place(x=330,y=220,width=130, height=50)
     CON['font']=f
 
-    LDATA = tk.Button(root, text='Launch Data', bg='#6495ED')
-    LDATA.place(x=335,y=340,width=130, height=50)
+    LDATA = tk.Button(root, text='Launch Data', bg='#6495ED', command = launchPack)
+    LDATA.place(x=330,y=290,width=130, height=50)
     LDATA['font']=f   
 
-    SP=tk.Button(root, text="Space Invaders",bg='#6495ED', command = lambda: spaceGame(root))
-    SP.place(x=335,y=410,width=130, height=50)
+    SP=tk.Button(root, text = "Space Invaders",bg = '#6495ED', command = lambda: spaceGame(root))
+    SP.place(x=330,y=360,width=130, height=50)
     SP['font']=f
 
-    QBTN = tk.Button(root, text="Quit", bg="#6495ED", command=quit)
-    QBTN.place(x=335,y=480,width=130, height=50)
+    QBTN = tk.Button(root, text = "Quit", bg = "#6495ED", command = quit)
+    QBTN.place(x=330,y=430,width=130, height=50)
     QBTN['font']=f
 
     c.pack()
