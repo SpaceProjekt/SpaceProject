@@ -69,7 +69,7 @@ def main():
                 else:                    
                     from datetime import datetime
                     from time import mktime
-                    date_time = datetime(yearVar, monthVar, dayVar, 0, 0)
+                    date_time = datetime(yearVar, monthVar, dayVar, 9, 0)
                     unix = int(mktime(date_time.timetuple()))                    
                     fetch(unix*1000)
             except ValueError or TypeError:
@@ -178,6 +178,8 @@ def main():
         constVarTk = tk.StringVar()
         def submit():
             constVar = constVarTk.get()
+            if len(constVar) == 0:
+                constVar = 'gem'
             fetch(constVar)
         def show1():
             constInfoWin = tk.Tk()
