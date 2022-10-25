@@ -28,7 +28,7 @@ def main():
     del(a[-1])
     path = '/'.join(a)
     if not os.path.isdir(f'{path}/cache'):
-        os.makedir(f'{path}/cache')
+        os.mkdir(f'{path}/cache')
     bg1= ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
     label1 = tk.Label( root, image = bg1)
     label1.place(x = 0, y = 0 ,relwidth=1, relheight=1)
