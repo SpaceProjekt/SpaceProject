@@ -27,6 +27,8 @@ def main():
     del(a[-1])
     del(a[-1])
     path = '/'.join(a)
+    if not os.path.isdir(f'{path}/cache'):
+        os.makedir(f'{path}/cache')
     bg1= ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
     label1 = tk.Label( root, image = bg1)
     label1.place(x = 0, y = 0 ,relwidth=1, relheight=1)
@@ -297,7 +299,7 @@ def main():
         labelC.place(x=0, y=0, relwidth=1, relheight=1)
         pyglet.font.add_file(f'{path}/python/assets/font.ttf')
 
-        def fetch(data):
+        def fetch(data):            
             with open(f'{path}/cache/input.json', 'w') as inpJ:
                 json.dump({
                     "type": "launch",
