@@ -104,20 +104,29 @@ def main():
                         dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
                         if (dateNow[0].startswith('0')): dateNow[0] = dateNow[0][1]
                         if (dateNow[1].startswith('0')): dateNow[1] = dateNow[1][1]
-                        tempDate = '/'.join(dateNow)
-                        print(tempDate)
+                        tempDate = '/'.join(dateNow)                        
                         for i in description:
                             if i.startswith(f'{tempDate}'):
                                 finalDes = i.split('\n')
                                 apodImgDes = tk.Toplevel(apodImgDis)
                                 apodImgDes.title(finalDes[1])                                
-                                apodImgDes.geometry('800x333')
+                                apodImgDes.geometry('600x333')
                                 imgDes = tk.Canvas(apodImgDes, height=333, width=600)
                                 imgDes.configure(bg='#5C5C5C')
                                 desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
                                 desLabel.place(x=0, y=0, relwidth=1, relheight=1)
                                 imgDes.pack()                                
-                    apodImgDis.mainloop()                    
+                    apodImgDis.mainloop()
+
+                elif output[0] == 'Cannot display video.':
+                    apodImgError = tk.Toplevel(apodWin)
+                    apodImgError.title('Video error')
+                    apodImgError.geometry('600x333')
+                    canva = tk.Canvas(apodImgError, height=333, width=600)
+                    textL = tk.Text(apodImgError, fg = "white", bg = '#5C5C5C')
+                    textL.insert(END, f'Cannot display a video.\nHere\'s the link to the video: {output[1]}')
+                    textL.place(x=0, y=0, relwidth=1, relheight=1)
+                    canva.pack()
 
         def today():
             vgA = pytz.timezone('America/Virgin')

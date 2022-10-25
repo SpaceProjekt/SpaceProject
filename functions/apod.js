@@ -76,6 +76,9 @@ module.exports = {
             await fetch(url).then(handleResponse).catch((err) => console.log(err))
             .then(data => {
                 responseData = data
+                if (data.media_type === 'video') {
+                    return console.log(`Cannot display video.\n${data.url}`)
+                }
                 if (!fs.existsSync(`./cache/apod/info.txt`) || (fs.existsSync(`./cache/apod/info.txt`) && fs.readFileSync('./cache/apod/info.txt', 'utf-8').length === 0)) {
                     fs.writeFileSync('./cache/apod/info.txt', 'Contains the information of the images stored.', function (err) {
                         if (err) return;
@@ -87,14 +90,16 @@ module.exports = {
                     }
                 }                
             });
-            const file = fs.createWriteStream(`./cache/apod/${dateNow}.png`);            
-            const request = https.get(`${responseData.url}`, function (response) {
-                response.pipe(file);
-                file.on("finish", () => {
-                    file.close();
-                });
-            });
-            return console.log(`Success!\n${dateNow.split('-').reverse().join('-')}`);
+            if (responseData.media_type != 'video') {
+                const file = fs.createWriteStream(`./cache/apod/${dateNow}.png`);            
+                const request = https.get(`${responseData.url}`, function (response) {
+                    response.pipe(file);
+                    file.on("finish", () => {
+                        file.close();
+                    });
+                });                
+                return console.log(`Success!\n${dateNow.split('-').reverse().join('-')}`);
+            }            
         } else if (!fs.readFileSync('./cache/apod/info.txt', 'utf-8').includes(`${date.toLocaleDateString()}`)) {
             if (fs.readFileSync('./cache/apod/info.txt', 'utf-8').length === 0) {
                 fs.writeFileSync('./cache/apod/info.txt', 'Contains the information of the images stored.', function (err) {
