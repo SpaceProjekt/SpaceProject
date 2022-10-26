@@ -44,6 +44,8 @@ def main():
         main()
 
     def apod():
+        if not os.path.isdir(f'{path}/cache'):
+            os.mkdir(f'{path}/cache/apod')
         root.destroy()
         apodWin = tk.Tk()
         apodC = tk.Canvas(apodWin, height = 533, width = 800)
@@ -166,6 +168,8 @@ def main():
         main()
 
     def CONST():
+        if not os.path.isdir(f'{path}/cache'):
+            os.mkdir(f'{path}/cache/constellations')
         root.destroy()
         constWin = tk.Tk()
         c2 = Canvas(constWin, bg='gray16', height=533, width=800)
@@ -290,6 +294,8 @@ def main():
         main()
 
     def launchData():
+        if not os.path.isdir(f'{path}/cache'):
+            os.mkdir(f'{path}/cache/launches')
         root.destroy()
         launchDWin = tk.Tk()
         c2 = Canvas(launchDWin, bg='gray16', height=533, width=800)
