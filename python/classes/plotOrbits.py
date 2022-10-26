@@ -50,7 +50,7 @@ def calculatePolar(x, y, vx, vy, kGC):
     Ca = C(kGC, r, vr, vtheta, theta)    
     ma = m(kGC, r, vr)
     na = n(kGC, r, vr, vtheta)        
-    rads = np.arange(0, (2 * np.pi), 0.01)
+    rads = np.arange(0, (2 * np.pi), 0.001)
     x = []
     y = []
     for rad in rads:

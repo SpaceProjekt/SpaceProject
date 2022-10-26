@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.font as font
 from PIL import ImageTk, Image, ImageFile
-from time import sleep
 from datetime import datetime
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -77,15 +76,14 @@ def main():
             except ValueError or TypeError:
                 return
 
-        def fetch(data):            
+        def fetch(data):
             with open(f'{path}/cache/input.json', 'w') as inpJ:
                 json.dump({
                     "type": "apod",
                     "request": f"{data}"
                 }, inpJ, indent=4)
                 inpJ.truncate()
-            output = subprocess.run('node .', capture_output=True).stdout
-            sleep(5)
+            output = subprocess.run('node .', capture_output=True).stdout            
             output = output.decode("utf-8")
             output = output.split('\n')
             if output[0] == 'Success!':
@@ -251,7 +249,7 @@ def main():
                     if constVar.lower() == i["abbr"].lower():
                         j = 1
                 if j == 0:
-                    quit()
+                    constWin.destroy()
                 if os.path.isfile(f'{path}/cache/constellations/{constVar.upper()}.gif'):
                     constWin.destroy()
                     constImg=tk.Tk()
@@ -271,8 +269,7 @@ def main():
                         }
                         json.dump(data,myj,indent=4)
                         myj.truncate()
-                        output= subprocess.run('node .',capture_output=True).stdout
-                        sleep(2)
+                        output= subprocess.run('node .',capture_output=True).stdout                        
                         output = output.decode("utf-8")
                         if output=='Success!\n':
                             constWin.destroy()
@@ -313,9 +310,8 @@ def main():
                     "request": f"{data}"
                 }, inpJ, indent = 4)
                 inpJ.truncate()
-            output= subprocess.run('node .',capture_output=True).stdout
-            sleep(4)
-            output = output.decode("utf-8")
+            output= subprocess.run('node .',capture_output=True).stdout            
+            output = output.decode("utf-8")            
             if output == 'Success!\n':
                 with open(f'{path}/cache/launches/{data}.json') as launchJ:
                     dataLaunch = json.load(launchJ)
