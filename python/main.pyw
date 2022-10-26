@@ -82,53 +82,52 @@ def main():
                     "request": f"{data}"
                 }, inpJ, indent=4)
                 inpJ.truncate()
-                output = subprocess.run('node .', capture_output=True).stdout
-                sleep(5)
-                output = output.decode("utf-8")
-                output = output.split('\n')
-                if output[0] == 'Success!':
-                    apodWin.destroy()
-                    apodImgDis = tk.Tk()
-                    dateNow = output[1].split('-')
-                    dateNow.reverse()
-                    dateNow = '-'.join(dateNow)
-                    apodImgDis.title('APOD - Astronomy Picture Of The Day')
-                    global img
-                    img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
-                    apodImgDis.geometry(f'{img.width()}x{img.height()}')
-                    apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())                    
-                    labelA = tk.Label(apodImgDis, image=img)
-                    labelA.place(x=0, y=0, relwidth=1, relheight=1)
-                    apodC2.pack()
-                    with open(f'{path}/cache/apod/info.txt') as readObj:
-                        description = readObj.read().split('\n\n\n')
-                        dateNow = dateNow.split('-')
-                        dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
-                        if (dateNow[0].startswith('0')): dateNow[0] = dateNow[0][1]
-                        if (dateNow[1].startswith('0')): dateNow[1] = dateNow[1][1]
-                        tempDate = '/'.join(dateNow)                        
-                        for i in description:
-                            if i.startswith(f'{tempDate}'):
-                                finalDes = i.split('\n')
-                                apodImgDes = tk.Toplevel(apodImgDis)
-                                apodImgDes.title(finalDes[1])                                
-                                apodImgDes.geometry('600x333')
-                                imgDes = tk.Canvas(apodImgDes, height=333, width=600)
-                                imgDes.configure(bg='#5C5C5C')
-                                desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
-                                desLabel.place(x=0, y=0, relwidth=1, relheight=1)
-                                imgDes.pack()                                
-                    apodImgDis.mainloop()
-
-                elif output[0] == 'Cannot display video.':
-                    apodImgError = tk.Toplevel(apodWin)
-                    apodImgError.title('Video error')
-                    apodImgError.geometry('600x333')
-                    canva = tk.Canvas(apodImgError, height=333, width=600)
-                    textL = tk.Text(apodImgError, fg = "white", bg = '#5C5C5C')
-                    textL.insert(END, f'Cannot display a video.\nHere\'s the link to the video: {output[1]}')
-                    textL.place(x=0, y=0, relwidth=1, relheight=1)
-                    canva.pack()
+            output = subprocess.run('node .', capture_output=True).stdout
+            sleep(5)
+            output = output.decode("utf-8")
+            output = output.split('\n')
+            if output[0] == 'Success!':
+                apodWin.destroy()
+                apodImgDis = tk.Tk()
+                dateNow = output[1].split('-')
+                dateNow.reverse()
+                dateNow = '-'.join(dateNow)
+                apodImgDis.title('APOD - Astronomy Picture Of The Day')
+                global img
+                img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
+                apodImgDis.geometry(f'{img.width()}x{img.height()}')
+                apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())                    
+                labelA = tk.Label(apodImgDis, image=img)
+                labelA.place(x=0, y=0, relwidth=1, relheight=1)
+                apodC2.pack()
+                with open(f'{path}/cache/apod/info.txt') as readObj:
+                    description = readObj.read().split('\n\n\n')
+                    dateNow = dateNow.split('-')
+                    dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
+                    if (dateNow[0].startswith('0')): dateNow[0] = dateNow[0][1]
+                    if (dateNow[1].startswith('0')): dateNow[1] = dateNow[1][1]
+                    tempDate = '/'.join(dateNow)                        
+                    for i in description:
+                        if i.startswith(f'{tempDate}'):
+                            finalDes = i.split('\n')
+                            apodImgDes = tk.Toplevel(apodImgDis)
+                            apodImgDes.title(finalDes[1])                                
+                            apodImgDes.geometry('600x333')
+                            imgDes = tk.Canvas(apodImgDes, height=333, width=600)
+                            imgDes.configure(bg='#5C5C5C')
+                            desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
+                            desLabel.place(x=0, y=0, relwidth=1, relheight=1)
+                            imgDes.pack()                                
+                apodImgDis.mainloop()
+            elif output[0] == 'Cannot display video.':
+                apodImgError = tk.Toplevel(apodWin)
+                apodImgError.title('Video error')
+                apodImgError.geometry('600x333')
+                canva = tk.Canvas(apodImgError, height=333, width=600)
+                textL = tk.Text(apodImgError, fg = "white", bg = '#5C5C5C')
+                textL.insert(END, f'Cannot display a video.\nHere\'s the link to the video: {output[1]}')
+                textL.place(x=0, y=0, relwidth=1, relheight=1)
+                canva.pack()
 
         def today():
             vgA = pytz.timezone('America/Virgin')
@@ -308,61 +307,59 @@ def main():
                     "request": f"{data}"
                 }, inpJ, indent = 4)
                 inpJ.truncate()
-                output= subprocess.run('node .',capture_output=True).stdout
-                sleep(4)
-                output = output.decode("utf-8")
-                if output == 'Success!\n':
-                    with open(f'{path}/cache/launches/{data}.json') as launchJ:
-                        dataLaunch = json.load(launchJ)
-                        launchDWin.destroy()
-                        launchInfoWin = tk.Tk()
-
-                        # Fullscreen functions
-                        state = False
-                        def toggle(state, launchInfoWin):                            
-                            state = not state
-                            launchInfoWin.attributes("-fullscreen", state)
-                            return "break"
-                        def disable(launchInfoWin):
-                            launchInfoWin.attributes("-fullscreen", False)
-                            return "break"
-                        launchInfoWin.bind("<Escape>", lambda event, launchInfoWin = launchInfoWin: disable(launchInfoWin))
-                        launchInfoWin.bind("<F11>", lambda event, state = state, launchInfoWin = launchInfoWin: toggle(state, launchInfoWin))
-                        
-                        launchInfoWin.geometry('1755x1040')
-                        if data == 'spacex':
-                            launchInfoWin.title('Launch Data for SpaceX')
-                        else:
-                            launchInfoWin.title(f'Launch Data for {data.upper()}')
-                        tree = ttk.Treeview(launchInfoWin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"), show='headings')
-                        s = ttk.Style()
-                        s.configure('Treeview', rowheight = 104)                        
-                        
-                        tree.column('c1', width = 125)
-                        tree.column('c2', width = 225)
-                        tree.column('c3', width = 170)
-                        tree.column('c4', width = 170)
-                        tree.column('c5', width = 380)
-                        tree.column('c6', width = 165)
-                        tree.column('c7', width = 180)
-                        tree.column('c8', width = 340)
-
-                        tree.heading('c1', text = 'Date')
-                        tree.heading('c2', text = 'Name')
-                        tree.heading('c3', text = 'Rocket')
-                        tree.heading('c4', text = 'Mission Name')
-                        tree.heading('c5', text = 'Mission Description')
-                        tree.heading('c6', text = 'Launch Pad Name')
-                        tree.heading('c7', text = 'Launch Pad Location')
-                        tree.heading('c8', text = 'Image Link')                        
-                        def wrap(string, length=70):
-                            return '\n'.join(textwrap.wrap(string, length))
-                        for i in range(len(dataLaunch)):
-                            arrayInfo = list(dataLaunch[i].values())
-                            for j in range(len(arrayInfo)):
-                                arrayInfo[j] = wrap(arrayInfo[j])                                
-                            tree.insert("", "end", values = (arrayInfo))
-                        tree.grid(row = 0, column = 0)
+            output= subprocess.run('node .',capture_output=True).stdout
+            sleep(4)
+            output = output.decode("utf-8")
+            if output == 'Success!\n':
+                with open(f'{path}/cache/launches/{data}.json') as launchJ:
+                    dataLaunch = json.load(launchJ)
+                    launchDWin.destroy()
+                    launchInfoWin = tk.Tk()
+                    # Fullscreen functions
+                    state = False
+                    def toggle(state, launchInfoWin):                            
+                        state = not state
+                        launchInfoWin.attributes("-fullscreen", state)
+                        return "break"
+                    def disable(launchInfoWin):
+                        launchInfoWin.attributes("-fullscreen", False)
+                        return "break"
+                    launchInfoWin.bind("<Escape>", lambda event, launchInfoWin = launchInfoWin: disable(launchInfoWin))
+                    launchInfoWin.bind("<F11>", lambda event, state = state, launchInfoWin = launchInfoWin: toggle(state, launchInfoWin))
+                    
+                    launchInfoWin.geometry('1755x1040')
+                    if data == 'spacex':
+                        launchInfoWin.title('Launch Data for SpaceX')
+                    else:
+                        launchInfoWin.title(f'Launch Data for {data.upper()}')
+                    tree = ttk.Treeview(launchInfoWin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"), show='headings')
+                    s = ttk.Style()
+                    s.configure('Treeview', rowheight = 104)                        
+                    
+                    tree.column('c1', width = 125)
+                    tree.column('c2', width = 225)
+                    tree.column('c3', width = 170)
+                    tree.column('c4', width = 170)
+                    tree.column('c5', width = 380)
+                    tree.column('c6', width = 165)
+                    tree.column('c7', width = 180)
+                    tree.column('c8', width = 340)
+                    tree.heading('c1', text = 'Date')
+                    tree.heading('c2', text = 'Name')
+                    tree.heading('c3', text = 'Rocket')
+                    tree.heading('c4', text = 'Mission Name')
+                    tree.heading('c5', text = 'Mission Description')
+                    tree.heading('c6', text = 'Launch Pad Name')
+                    tree.heading('c7', text = 'Launch Pad Location')
+                    tree.heading('c8', text = 'Image Link')                        
+                    def wrap(string, length=70):
+                        return '\n'.join(textwrap.wrap(string, length))
+                    for i in range(len(dataLaunch)):
+                        arrayInfo = list(dataLaunch[i].values())
+                        for j in range(len(arrayInfo)):
+                            arrayInfo[j] = wrap(arrayInfo[j])                                
+                        tree.insert("", "end", values = (arrayInfo))
+                    tree.grid(row = 0, column = 0)
 
 
         def nasa():
