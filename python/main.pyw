@@ -50,7 +50,7 @@ def main():
         apodC = tk.Canvas(apodWin, height = 533, width = 800)
         bg2 = ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
         apodWin.geometry('800x533')
-        apodWin.title('APOD - Astronomy Picture Of The Day')               
+        apodWin.title('APOD - Astronomy Picture Of The Day')
         labelC = Label(apodWin, image=bg2)
         labelC.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -58,7 +58,7 @@ def main():
         monthVarTk = tk.StringVar()
         dayVarTk = tk.StringVar()
 
-        def submit():            
+        def submit():
             try:
                 yearVar = int(yearVarTk.get())
                 monthVar = int(monthVarTk.get())
@@ -66,12 +66,48 @@ def main():
                 if yearVar*monthVar*dayVar == 0:
                     return
                 if os.path.isfile(f'{path}/cache/{dayVar}-{monthVar}-{yearVar}.png'):
-                    return 1
-                else:                    
+                    apodWin.destroy()
+                    apodImgDis = tk.Tk()
+                    dateNow = f'{dayVar}-{monthVar}-{yearVar}'
+                    apodImgDis.title('APOD - Astronomy Picture Of The Day')
+                    global img
+                    img = ImageTk.PhotoImage(Image.open(
+                        f"{path}/cache/apod/{dateNow}.png"))
+                    apodImgDis.geometry(f'{img.width()}x{img.height()}')
+                    apodC2 = tk.Canvas(
+                        apodImgDis, height=img.height(), width=img.width())
+                    labelA = tk.Label(apodImgDis, image=img)
+                    labelA.place(x=0, y=0, relwidth=1, relheight=1)
+                    apodC2.pack()
+                    with open(f'{path}/cache/apod/info.txt') as readObj:
+                        description = readObj.read().split('\n\n\n')
+                        dateNow = dateNow.split('-')
+                        dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
+                        if (dateNow[0].startswith('0')):
+                            dateNow[0] = dateNow[0][1]
+                        if (dateNow[1].startswith('0')):
+                            dateNow[1] = dateNow[1][1]
+                        tempDate = '/'.join(dateNow)
+                        for i in description:
+                            if i.startswith(f'{tempDate}'):
+                                finalDes = i.split('\n')
+                                apodImgDes = tk.Toplevel(apodImgDis)
+                                apodImgDes.title(finalDes[1])
+                                apodImgDes.geometry('600x333')
+                                imgDes = tk.Canvas(
+                                    apodImgDes, height=333, width=600)
+                                imgDes.configure(bg='#5C5C5C')
+                                desLabel = tk.Label(
+                                    apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg="white", bg='#5C5C5C')
+                                desLabel.place(
+                                    x=0, y=0, relwidth=1, relheight=1)
+                                imgDes.pack()
+                    apodImgDis.mainloop()
+                else:
                     from datetime import datetime
                     from time import mktime
                     date_time = datetime(yearVar, monthVar, dayVar, 9, 0)
-                    unix = int(mktime(date_time.timetuple()))                    
+                    unix = int(mktime(date_time.timetuple()))
                     fetch(unix*1000)
             except ValueError or TypeError:
                 return
@@ -96,7 +132,7 @@ def main():
                 global img
                 img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
                 apodImgDis.geometry(f'{img.width()}x{img.height()}')
-                apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())                    
+                apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())
                 labelA = tk.Label(apodImgDis, image=img)
                 labelA.place(x=0, y=0, relwidth=1, relheight=1)
                 apodC2.pack()
@@ -106,18 +142,18 @@ def main():
                     dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
                     if (dateNow[0].startswith('0')): dateNow[0] = dateNow[0][1]
                     if (dateNow[1].startswith('0')): dateNow[1] = dateNow[1][1]
-                    tempDate = '/'.join(dateNow)                        
+                    tempDate = '/'.join(dateNow)
                     for i in description:
                         if i.startswith(f'{tempDate}'):
                             finalDes = i.split('\n')
                             apodImgDes = tk.Toplevel(apodImgDis)
-                            apodImgDes.title(finalDes[1])                                
+                            apodImgDes.title(finalDes[1])
                             apodImgDes.geometry('600x333')
                             imgDes = tk.Canvas(apodImgDes, height=333, width=600)
                             imgDes.configure(bg='#5C5C5C')
                             desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
                             desLabel.place(x=0, y=0, relwidth=1, relheight=1)
-                            imgDes.pack()                                
+                            imgDes.pack()
                 apodImgDis.mainloop()
             elif output[0] == 'Cannot display video.':
                 apodImgError = tk.Toplevel(apodWin)
@@ -137,8 +173,8 @@ def main():
                 return 1
             else:
                 fetch('today')
-        
-        def randomImg():            
+
+        def randomImg():
             fetch('random')
 
         show_btn = tk.Button(apodWin, text = 'Today', command = today)
@@ -155,7 +191,7 @@ def main():
         label4.place(x=270, y=150)
         label4.insert(END, 'Day')
         sub_btn = tk.Button(apodWin, text='Submit the specific date', command=submit)
-        sub_btn.place(x=150, y=200)        
+        sub_btn.place(x=150, y=200)
         apodC.pack()
         apodWin.mainloop()
 
@@ -193,7 +229,7 @@ def main():
                         if i == 0:
                             eT = tk.Entry(constInfoWin, width=30, fg='black', font=('Calibri Light', 12))
                             eT.grid(row=i, column=j)
-                            if j == 0:                                
+                            if j == 0:
                                 eT.insert(END, 'Abbreviation')
                             elif j == 1:
                                 eT.insert(END, 'Name')
@@ -204,21 +240,21 @@ def main():
                         else:
                             e = tk.Entry(constInfoWin, width=30, fg='blue', font=('Calibri Light', 12))
                             e.grid(row = i + 1, column= j)
-                            e.insert(END, list(constInfo[i].values())[j])                   
+                            e.insert(END, list(constInfo[i].values())[j])
             constInfoWin.mainloop()
-        
+
         def show2():
             constInfoWin2 = tk.Tk()
             constInfoWin2.title('Constellation Information.')
             constInfoWin2.geometry = ('2000x800')
             with open(f'{path}/constellations.json') as constJ:
                 constInfo = json.load(constJ)
-                for i in range(44, len(constInfo)):                    
-                    for j in range(len(list(constInfo[i].values()))):                        
+                for i in range(44, len(constInfo)):
+                    for j in range(len(list(constInfo[i].values()))):
                         if i == 44:
                             eT = tk.Entry(constInfoWin2, width=30, fg='black', font=('Calibri Light', 12))
                             eT.grid(row=i, column=j)
-                            if j == 0:                                
+                            if j == 0:
                                 eT.insert(END, 'Abbreviation')
                             elif j == 1:
                                 eT.insert(END, 'Name')
@@ -226,10 +262,10 @@ def main():
                                 eT.insert(END, 'Genitive Name')
                             elif j == 3:
                                 eT.insert(END, 'English Name')
-                        else: 
+                        else:
                             e = tk.Entry(constInfoWin2, width=30, fg='blue', font=('Calibri Light', 12))
                             e.grid(row = i + 1, column= j)
-                            e.insert(END, list(constInfo[i].values())[j])                     
+                            e.insert(END, list(constInfo[i].values())[j])
             constInfoWin2.mainloop()
         sub_btn = tk.Button(constWin, text='Submit', command=submit)
         sub_btn.place(x=150, y=200)
@@ -269,7 +305,7 @@ def main():
                         }
                         json.dump(data,myj,indent=4)
                         myj.truncate()
-                        output= subprocess.run(f'node {path}/index.js',capture_output=True).stdout                        
+                        output= subprocess.run(f'node {path}/index.js',capture_output=True).stdout
                         output = output.decode("utf-8")
                         if output=='Success!\n':
                             constWin.destroy()
@@ -303,15 +339,15 @@ def main():
         labelC.place(x=0, y=0, relwidth=1, relheight=1)
         pyglet.font.add_file(f'{path}/python/assets/font.ttf')
 
-        def fetch(data):            
+        def fetch(data):
             with open(f'{path}/cache/input.json', 'w') as inpJ:
                 json.dump({
                     "type": "launch",
                     "request": f"{data}"
                 }, inpJ, indent = 4)
                 inpJ.truncate()
-            output= subprocess.run(f'node {path}/index.js',capture_output=True).stdout            
-            output = output.decode("utf-8")            
+            output= subprocess.run(f'node {path}/index.js',capture_output=True).stdout
+            output = output.decode("utf-8")
             if output == 'Success!\n':
                 with open(f'{path}/cache/launches/{data}.json') as launchJ:
                     dataLaunch = json.load(launchJ)
@@ -319,7 +355,7 @@ def main():
                     launchInfoWin = tk.Tk()
                     # Fullscreen functions
                     state = False
-                    def toggle(state, launchInfoWin):                            
+                    def toggle(state, launchInfoWin):
                         state = not state
                         launchInfoWin.attributes("-fullscreen", state)
                         return "break"
@@ -328,7 +364,7 @@ def main():
                         return "break"
                     launchInfoWin.bind("<Escape>", lambda event, launchInfoWin = launchInfoWin: disable(launchInfoWin))
                     launchInfoWin.bind("<F11>", lambda event, state = state, launchInfoWin = launchInfoWin: toggle(state, launchInfoWin))
-                    
+
                     launchInfoWin.geometry('1755x1040')
                     if data == 'spacex':
                         launchInfoWin.title('Launch Data for SpaceX')
@@ -336,8 +372,8 @@ def main():
                         launchInfoWin.title(f'Launch Data for {data.upper()}')
                     tree = ttk.Treeview(launchInfoWin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"), show='headings')
                     s = ttk.Style()
-                    s.configure('Treeview', rowheight = 104)                        
-                    
+                    s.configure('Treeview', rowheight = 104)
+
                     tree.column('c1', width = 125)
                     tree.column('c2', width = 225)
                     tree.column('c3', width = 170)
@@ -353,13 +389,13 @@ def main():
                     tree.heading('c5', text = 'Mission Description')
                     tree.heading('c6', text = 'Launch Pad Name')
                     tree.heading('c7', text = 'Launch Pad Location')
-                    tree.heading('c8', text = 'Image Link')                        
+                    tree.heading('c8', text = 'Image Link')
                     def wrap(string, length=70):
                         return '\n'.join(textwrap.wrap(string, length))
                     for i in range(len(dataLaunch)):
                         arrayInfo = list(dataLaunch[i].values())
                         for j in range(len(arrayInfo)):
-                            arrayInfo[j] = wrap(arrayInfo[j])                                
+                            arrayInfo[j] = wrap(arrayInfo[j])
                         tree.insert("", "end", values = (arrayInfo))
                     tree.grid(row = 0, column = 0)
 
@@ -400,7 +436,7 @@ def main():
 
     LDATA = tk.Button(root, text='Launch Data', bg='#6495ED', command = launchPack)
     LDATA.place(x=330,y=290,width=130, height=50)
-    LDATA['font']=f   
+    LDATA['font']=f
 
     SP=tk.Button(root, text = "Space Invaders",bg = '#6495ED', command = lambda: spaceGame(root))
     SP.place(x=330,y=360,width=130, height=50)
