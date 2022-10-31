@@ -83,7 +83,7 @@ def main():
                     "request": f"{data}"
                 }, inpJ, indent=4)
                 inpJ.truncate()
-            output = subprocess.run('node .', capture_output=True).stdout            
+            output = subprocess.run(f'node {path}/index.js', capture_output=True).stdout
             output = output.decode("utf-8")
             output = output.split('\n')
             if output[0] == 'Success!':
@@ -269,7 +269,7 @@ def main():
                         }
                         json.dump(data,myj,indent=4)
                         myj.truncate()
-                        output= subprocess.run('node .',capture_output=True).stdout                        
+                        output= subprocess.run(f'node {path}/index.js',capture_output=True).stdout                        
                         output = output.decode("utf-8")
                         if output=='Success!\n':
                             constWin.destroy()
@@ -310,7 +310,7 @@ def main():
                     "request": f"{data}"
                 }, inpJ, indent = 4)
                 inpJ.truncate()
-            output= subprocess.run('node .',capture_output=True).stdout            
+            output= subprocess.run(f'node {path}/index.js',capture_output=True).stdout            
             output = output.decode("utf-8")            
             if output == 'Success!\n':
                 with open(f'{path}/cache/launches/{data}.json') as launchJ:
