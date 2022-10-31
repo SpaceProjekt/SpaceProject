@@ -43,7 +43,7 @@ def main():
         main()
 
     def apod():
-        if not os.path.isdir(f'{path}/cache'):
+        if not os.path.isdir(f'{path}/cache/apod'):
             os.mkdir(f'{path}/cache/apod')
         root.destroy()
         apodWin = tk.Tk()
@@ -166,7 +166,7 @@ def main():
         main()
 
     def CONST():
-        if not os.path.isdir(f'{path}/cache'):
+        if not os.path.isdir(f'{path}/cache/constellations'):
             os.mkdir(f'{path}/cache/constellations')
         root.destroy()
         constWin = tk.Tk()
@@ -291,7 +291,7 @@ def main():
         main()
 
     def launchData():
-        if not os.path.isdir(f'{path}/cache'):
+        if not os.path.isdir(f'{path}/cache/launches'):
             os.mkdir(f'{path}/cache/launches')
         root.destroy()
         launchDWin = tk.Tk()
