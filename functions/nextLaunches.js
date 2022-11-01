@@ -3,6 +3,9 @@ const fs = require('fs');
 
 module.exports = {
     async execute(input) {
+        let path = __dirname.split(/\\/gm);
+        path.pop();
+        path = path.join('/');
         function handleResponse(response) {
             return response.json().then(function (json) {
                 return response.ok ? json : Promise.reject(json);

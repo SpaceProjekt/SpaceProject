@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.font as font
 from PIL import ImageTk, Image, ImageFile
-from datetime import datetime
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -63,52 +62,56 @@ def main():
                 yearVar = int(yearVarTk.get())
                 monthVar = int(monthVarTk.get())
                 dayVar = int(dayVarTk.get())
-                if yearVar*monthVar*dayVar == 0:
-                    return
-                if os.path.isfile(f'{path}/cache/{dayVar}-{monthVar}-{yearVar}.png'):
-                    apodWin.destroy()
-                    apodImgDis = tk.Tk()
-                    dateNow = f'{dayVar}-{monthVar}-{yearVar}'
-                    apodImgDis.title('APOD - Astronomy Picture Of The Day')
-                    global img
-                    img = ImageTk.PhotoImage(Image.open(
-                        f"{path}/cache/apod/{dateNow}.png"))
-                    apodImgDis.geometry(f'{img.width()}x{img.height()}')
-                    apodC2 = tk.Canvas(
-                        apodImgDis, height=img.height(), width=img.width())
-                    labelA = tk.Label(apodImgDis, image=img)
-                    labelA.place(x=0, y=0, relwidth=1, relheight=1)
-                    apodC2.pack()
-                    with open(f'{path}/cache/apod/info.txt') as readObj:
-                        description = readObj.read().split('\n\n\n')
-                        dateNow = dateNow.split('-')
-                        dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
-                        if (dateNow[0].startswith('0')):
-                            dateNow[0] = dateNow[0][1]
-                        if (dateNow[1].startswith('0')):
-                            dateNow[1] = dateNow[1][1]
-                        tempDate = '/'.join(dateNow)
-                        for i in description:
-                            if i.startswith(f'{tempDate}'):
-                                finalDes = i.split('\n')
-                                apodImgDes = tk.Toplevel(apodImgDis)
-                                apodImgDes.title(finalDes[1])
-                                apodImgDes.geometry('600x333')
-                                imgDes = tk.Canvas(
-                                    apodImgDes, height=333, width=600)
-                                imgDes.configure(bg='#5C5C5C')
-                                desLabel = tk.Label(
-                                    apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg="white", bg='#5C5C5C')
-                                desLabel.place(
-                                    x=0, y=0, relwidth=1, relheight=1)
-                                imgDes.pack()
-                    apodImgDis.mainloop()
-                else:
-                    from datetime import datetime
-                    from time import mktime
-                    date_time = datetime(yearVar, monthVar, dayVar, 9, 0)
-                    unix = int(mktime(date_time.timetuple()))
-                    fetch(unix*1000)
+                from datetime import datetime
+                vgA = pytz.timezone('America/Virgin')
+                todayTime = datetime.now(vgA)
+                searchDate = todayTime.strftime('%Y-%m-%d').split('-')
+                for i in range(len(searchDate)):
+                    searchDate[i] = int(searchDate[i])
+                if (yearVar < 1995 or yearVar > searchDate[0]) or (monthVar > 12 or monthVar < 1) or (dayVar < 1 or dayVar > 31) or (yearVar % 4 != 0 and monthVar == 2 and dayVar > 28) or (monthVar in [2, 4, 6, 9, 11] and dayVar > 30) or (yearVar == searchDate[0] and monthVar == searchDate[1] and dayVar > searchDate[2]) or (yearVar == searchDate[0] and monthVar > searchDate[1]):
+                    errorWin = tk.Toplevel(apodWin)
+                    errorWin.title('Error: Date is invalid!')
+                    errorWin.geometry('600x133')
+                    errorMessage = tk.Canvas(errorWin, height=133, width=600)
+                    errorMessage.configure(bg='#5C5C5C')
+                    err = tk.Label(errorWin, text = 'Date is out of range or is invalid. Enter a valid date between 20 June 1995 and the present date.')
+                    err.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+                    errorMessage.pack()
+                else:                 
+                    if os.path.isfile(f'{path}/cache/{dayVar}-{monthVar}-{yearVar}.png'):
+                        apodWin.destroy()
+                        apodImgDis = tk.Tk()
+                        dateNow = f'{dayVar}-{monthVar}-{yearVar}'                    
+                        global img
+                        img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
+                        apodImgDis.title('APOD - Astronomy Picture Of The Day')
+                        apodImgDis.geometry(f'{img.width()}x{img.height()}')
+                        apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())
+                        labelA = tk.Label(apodImgDis, image=img)
+                        labelA.place(x=0, y=0, relwidth=1, relheight=1)
+                        apodC2.pack()
+                        with open(f'{path}/cache/apod/info.txt') as readObj:
+                            description = readObj.read().split('\n\n\n')
+                            tempDate = dateNow.split('-')                                                
+                            tempDate = '/'.join(tempDate)
+                            for i in description:
+                                if i.startswith(f'{tempDate}'):
+                                    finalDes = i.split('\n')
+                                    apodImgDes = tk.Toplevel(apodImgDis)
+                                    apodImgDes.title(finalDes[1])
+                                    apodImgDes.geometry('600x333')
+                                    imgDes = tk.Canvas(apodImgDes, height=333, width=600)
+                                    imgDes.configure(bg='#5C5C5C')
+                                    desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg="white", bg='#5C5C5C')
+                                    desLabel.place(x=0, y=0, relwidth=1, relheight=1)
+                                    imgDes.pack()
+                        apodImgDis.mainloop()
+                    else:
+                        from datetime import datetime
+                        from time import mktime
+                        date_time = datetime(yearVar, monthVar, dayVar, 9, 0)
+                        unix = int(mktime(date_time.timetuple()))
+                        fetch(unix*1000)
             except ValueError or TypeError:
                 return
 
@@ -125,12 +128,10 @@ def main():
             if output[0] == 'Success!':
                 apodWin.destroy()
                 apodImgDis = tk.Tk()
-                dateNow = output[1].split('-')
-                dateNow.reverse()
-                dateNow = '-'.join(dateNow)
-                apodImgDis.title('APOD - Astronomy Picture Of The Day')
+                dateNow = output[1]                
                 global img
                 img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
+                apodImgDis.title('APOD - Astronomy Picture Of The Day')
                 apodImgDis.geometry(f'{img.width()}x{img.height()}')
                 apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())
                 labelA = tk.Label(apodImgDis, image=img)
@@ -138,14 +139,11 @@ def main():
                 apodC2.pack()
                 with open(f'{path}/cache/apod/info.txt') as readObj:
                     description = readObj.read().split('\n\n\n')
-                    dateNow = dateNow.split('-')
-                    dateNow[0], dateNow[1] = dateNow[1], dateNow[0]
-                    if (dateNow[0].startswith('0')): dateNow[0] = dateNow[0][1]
-                    if (dateNow[1].startswith('0')): dateNow[1] = dateNow[1][1]
-                    tempDate = '/'.join(dateNow)
+                    tempDate = dateNow.split('-')                                        
+                    tempDate = '/'.join(tempDate)                    
                     for i in description:
                         if i.startswith(f'{tempDate}'):
-                            finalDes = i.split('\n')
+                            finalDes = i.split('\n')                            
                             apodImgDes = tk.Toplevel(apodImgDis)
                             apodImgDes.title(finalDes[1])
                             apodImgDes.geometry('600x333')
@@ -166,11 +164,38 @@ def main():
                 canva.pack()
 
         def today():
+            from datetime import datetime
             vgA = pytz.timezone('America/Virgin')
             todayTime = datetime.now(vgA)
-            searchDate = todayTime.strftime('%d:%m%Y')
-            if os.path.isfile(f'{path}/cache/{searchDate}.png'):
-                return 1
+            searchDate = todayTime.strftime('%d-%m-%Y')            
+            if os.path.isfile(f'{path}/cache/apod/{searchDate}.png'):
+                apodWin.destroy()
+                apodImgDis = tk.Tk()
+                dateNow = searchDate
+                apodImgDis.title('APOD - Astronomy Picture Of The Day')
+                global img
+                img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
+                apodImgDis.geometry(f'{img.width()}x{img.height()}')
+                apodC2 = tk.Canvas(apodImgDis, height=img.height(), width=img.width())
+                labelA = tk.Label(apodImgDis, image=img)
+                labelA.place(x=0, y=0, relwidth=1, relheight=1)
+                apodC2.pack()
+                with open(f'{path}/cache/apod/info.txt') as readObj:
+                    description = readObj.read().split('\n\n\n')
+                    dateNow = dateNow.split('-')                    
+                    tempDate = '/'.join(dateNow)
+                    for i in description:
+                        if i.startswith(f'{tempDate}'):
+                            finalDes = i.split('\n')
+                            apodImgDes = tk.Toplevel(apodImgDis)
+                            apodImgDes.title(finalDes[1])
+                            apodImgDes.geometry('600x333')
+                            imgDes = tk.Canvas(apodImgDes, height=333, width=600)
+                            imgDes.configure(bg='#5C5C5C')
+                            desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
+                            desLabel.place(x=0, y=0, relwidth=1, relheight=1)
+                            imgDes.pack()
+                apodImgDis.mainloop()
             else:
                 fetch('today')
 
