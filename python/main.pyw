@@ -7,30 +7,35 @@ from PIL import ImageTk, Image, ImageFile
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-def win(root):
-    root.geometry('800x533')
-    root.title('Space')
-
 def spaceGame(root):
     spaceInvaders.functions.SpaceInvaders(root)
     main()
 
+def center(root):
+    root.update()
+    root.minsize(root.winfo_width(), root.winfo_height())
+    x_cordinate = int((root.winfo_screenwidth() / 2) - (root.winfo_width() / 2))
+    y_cordinate = int((root.winfo_screenheight() / 2) - (root.winfo_height() / 2))
+    root.geometry("+{}+{}".format(x_cordinate, y_cordinate-20))
+
 def main():
     root=tk.Tk()
     c=Canvas(root, height=533, width=800)
-
-    win(root)
+    root.resizable(0, 0)
+    root.title('Space')
 
     a = os.path.abspath(__file__).split('\\')
     del(a[-1])
     del(a[-1])
-    path = '/'.join(a)
+    path = '/'.join(a)    
     if not os.path.isdir(f'{path}/cache'):
         os.mkdir(f'{path}/cache')
     bg1= ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
     label1 = tk.Label( root, image = bg1)
     label1.place(x = 0, y = 0 ,relwidth=1, relheight=1)
-    txt=tk.Label(root, text='MAIN MENU', font='Helvetica 18', bg='#6495ED')
+    f = font.Font(family='Roboto Slab', weight='bold')
+    txt=tk.Label(root, text='MAIN MENU', bg='#6495ED')
+    txt['font'] = f   
     txt.pack(ipadx= 30, ipady=20)
 
     c.pack()
@@ -46,9 +51,9 @@ def main():
             os.mkdir(f'{path}/cache/apod')
         root.destroy()
         apodWin = tk.Tk()
+        apodWin.resizable(0, 0)
         apodC = tk.Canvas(apodWin, height = 533, width = 800)
         bg2 = ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
-        apodWin.geometry('800x533')
         apodWin.title('APOD - Astronomy Picture Of The Day')
         labelC = Label(apodWin, image=bg2)
         labelC.place(x=0, y=0, relwidth=1, relheight=1)
@@ -189,7 +194,7 @@ def main():
                             finalDes = i.split('\n')
                             apodImgDes = tk.Toplevel(apodImgDis)
                             apodImgDes.title(finalDes[1])
-                            apodImgDes.geometry('600x333')
+                            center(apodImgDes)
                             imgDes = tk.Canvas(apodImgDes, height=333, width=600)
                             imgDes.configure(bg='#5C5C5C')
                             desLabel = tk.Label(apodImgDes, text=f'{finalDes[2]}\n{finalDes[3]}', justify="left", wraplength=500, fg = "white", bg = '#5C5C5C')
@@ -200,24 +205,25 @@ def main():
                 fetch('today')
 
         def randomImg():
-            fetch('random')
+            fetch('random')        
 
-        show_btn = tk.Button(apodWin, text = 'Today', command = today)
+        show_btn = tk.Button(apodWin, text = 'Today', command = today, bg = '#427394', fg = '#FFFFFF')
         show_btn.place(x=350, y=200)
-        show_btn2 = tk.Button(apodWin, text = 'Random Day', command = randomImg)
+        show_btn2 = tk.Button(apodWin, text = 'Random Day', command = randomImg, bg = '#427394', fg = '#FFFFFF')
         show_btn2.place(x=450, y=200)
-        label2 = tk.Entry(apodWin, textvariable=yearVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4')
-        label2.place(x=150, y=150)
-        label2.insert(END, 'Year')
-        label3 = tk.Entry(apodWin, textvariable=monthVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4')
+        label2 = tk.Entry(apodWin, textvariable=yearVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4', bg = '#CBCBCB')
+        label2.place(x=150, y=150)        
+        label2.insert(END, 'Year')        
+        label3 = tk.Entry(apodWin, textvariable=monthVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4', bg = '#CBCBCB')
         label3.place(x=210, y=150)
         label3.insert(END, 'Month')
-        label4 = tk.Entry(apodWin, textvariable=dayVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4')
+        label4 = tk.Entry(apodWin, textvariable=dayVarTk, width=6, font=('Calibri Light', 12), fg = 'azure4', bg = '#CBCBCB')
         label4.place(x=270, y=150)
         label4.insert(END, 'Day')
-        sub_btn = tk.Button(apodWin, text='Submit the specific date', command=submit)
+        sub_btn = tk.Button(apodWin, text='Submit the specific date', command=submit, bg = '#427394', fg = '#FFFFFF')
         sub_btn.place(x=150, y=200)
         apodC.pack()
+        center(apodWin)
         apodWin.mainloop()
 
     #Constellation functions
@@ -231,8 +237,8 @@ def main():
             os.mkdir(f'{path}/cache/constellations')
         root.destroy()
         constWin = tk.Tk()
-        c2 = Canvas(constWin, bg='gray16', height=533, width=800)
-        constWin.geometry = ('800x533')
+        constWin.resizable(0, 0)
+        c2 = Canvas(constWin, bg='gray16', height=533, width=800)        
         constWin.title('Constellations')
         bg2 = ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
         labelC = Label(constWin, image = bg2)
@@ -265,7 +271,7 @@ def main():
                         else:
                             e = tk.Entry(constInfoWin, width=30, fg='blue', font=('Calibri Light', 12))
                             e.grid(row = i + 1, column= j)
-                            e.insert(END, list(constInfo[i].values())[j])
+                            e.insert(END, list(constInfo[i].values())[j])            
             constInfoWin.mainloop()
 
         def show2():
@@ -290,15 +296,15 @@ def main():
                         else:
                             e = tk.Entry(constInfoWin2, width=30, fg='blue', font=('Calibri Light', 12))
                             e.grid(row = i + 1, column= j)
-                            e.insert(END, list(constInfo[i].values())[j])
-            constInfoWin2.mainloop()
-        sub_btn = tk.Button(constWin, text='Submit', command=submit)
+                            e.insert(END, list(constInfo[i].values())[j])            
+            constInfoWin2.mainloop()        
+        sub_btn = tk.Button(constWin, text='Submit', command=submit, bg = '#427394', fg = '#FFFFFF')
         sub_btn.place(x=150, y=200)
-        show_btn = tk.Button(constWin, text = 'Show Constellation Details [Part 1]', command = show1)
+        show_btn = tk.Button(constWin, text = 'Show Constellation Details [Part 1]', command = show1, bg = '#427394', fg = '#FFFFFF')
         show_btn.place(x=250, y=200)
-        show_btn2 = tk.Button(constWin, text = 'Show Constellation Details [Part 2]', command = show2)
+        show_btn2 = tk.Button(constWin, text = 'Show Constellation Details [Part 2]', command = show2, bg = '#427394', fg = '#FFFFFF')
         show_btn2.place(x=250, y=230)
-        label2 = tk.Entry(constWin, textvariable=constVarTk, width=50, font=('Calibri Light', 12), fg = 'azure4')
+        label2 = tk.Entry(constWin, textvariable=constVarTk, width=50, font=('Calibri Light', 12), fg='azure4', bg='#CBCBCB')
         label2.place(x=150, y=150)
         label2.insert(END, 'Enter the constellation abbreviations here.')
         c2.pack()
@@ -343,6 +349,7 @@ def main():
                             label3=tk.Label(constImg, image=bg4)
                             label3.place(x=0, y=0, relwidth=1, relheight=1)
                             c3.pack()
+        center(constWin)
         constWin.mainloop()
 
     # Launch Data Visualisation
@@ -356,13 +363,12 @@ def main():
             os.mkdir(f'{path}/cache/launches')
         root.destroy()
         launchDWin = tk.Tk()
-        c2 = Canvas(launchDWin, bg='gray16', height=533, width=800)
-        launchDWin.geometry = ('800x533')
+        launchDWin.resizable(0, 0)
+        c2 = Canvas(launchDWin, bg='gray16', height=533, width=800)        
         launchDWin.title('Launch Data')
         bg2 = ImageTk.PhotoImage(Image.open(f"{path}/python/assets/tkbg.jpg"))
         labelC = Label(launchDWin, image=bg2)
-        labelC.place(x=0, y=0, relwidth=1, relheight=1)
-        pyglet.font.add_file(f'{path}/python/assets/font.ttf')
+        labelC.place(x=0, y=0, relwidth=1, relheight=1)        
 
         def fetch(data):
             with open(f'{path}/cache/input.json', 'w') as inpJ:
@@ -396,9 +402,10 @@ def main():
                     else:
                         launchInfoWin.title(f'Launch Data for {data.upper()}')
                     tree = ttk.Treeview(launchInfoWin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"), show='headings')
-                    s = ttk.Style()
-                    s.configure('Treeview', rowheight = 104)
-
+                    style = ttk.Style(launchInfoWin)
+                    launchInfoWin.tk.call("source", f"{path}/python/assets/themes/azure.tcl")
+                    launchInfoWin.tk.call("set_theme", "dark")
+                    style.configure('Treeview', rowheight=104, bg='#5C5C5C')
                     tree.column('c1', width = 125)
                     tree.column('c2', width = 225)
                     tree.column('c3', width = 170)
@@ -415,13 +422,14 @@ def main():
                     tree.heading('c6', text = 'Launch Pad Name')
                     tree.heading('c7', text = 'Launch Pad Location')
                     tree.heading('c8', text = 'Image Link')
+                    tree.tag_configure('normal', background='#5C5C5C')
                     def wrap(string, length=70):
                         return '\n'.join(textwrap.wrap(string, length))
                     for i in range(len(dataLaunch)):
                         arrayInfo = list(dataLaunch[i].values())
                         for j in range(len(arrayInfo)):
                             arrayInfo[j] = wrap(arrayInfo[j])
-                        tree.insert("", "end", values = (arrayInfo))
+                        tree.insert("", "end", values = (arrayInfo), tags = ('normal'))                    
                     tree.grid(row = 0, column = 0)
 
 
@@ -435,7 +443,8 @@ def main():
             fetch('spacex')
 
         # Buttons
-        f = font.Font(family = 'Roboto Slab')
+        pyglet.font.add_file(f'{path}/python/assets/font.ttf')
+        f = font.Font(family='Roboto Slab')
         nasa = tk.Button(launchDWin, text = 'NASA', bg = '#6495ED', command = nasa)
         nasa.place(x = 330, y = 100, width = 130, height = 50)
         nasa['font'] = f
@@ -446,12 +455,11 @@ def main():
         spaceX.place(x=330, y=240, width=130, height=50)
         spaceX['font'] = f
         c2.pack()
+        center(launchDWin)
         launchDWin.mainloop()
 
-    # Buttons for commands
-
-    AP = tk.Button(root, text = 'APOD', bg = '#6495ED', command = apodPack)
-    f=font.Font(family = 'Comicsans',weight = 'bold')
+    # Buttons for commands    
+    AP = tk.Button(root, text = 'APOD', bg = '#6495ED', command = apodPack)    
     AP.place(x=330, y=150, width=130, height=50)
     AP['font']=f
 
@@ -472,6 +480,7 @@ def main():
     QBTN['font']=f
 
     c.pack()
+    center(root)
     root.mainloop()
 
 main()
