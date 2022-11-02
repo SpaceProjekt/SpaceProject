@@ -82,11 +82,17 @@ def main():
                     err = tk.Label(errorWin, text = 'Date is out of range or is invalid. Enter a valid date between 20 June 1995 and the present date.')
                     err.place(x = 0, y = 0, relwidth = 1, relheight = 1)
                     errorMessage.pack()
-                else:                 
-                    if os.path.isfile(f'{path}/cache/{dayVar}-{monthVar}-{yearVar}.png'):
+                else:
+                    tempDay = dayVar
+                    tempMonth = monthVar
+                    if dayVar//10 == 0:
+                        tempDay = '0' + str(dayVar)
+                    if monthVar//10 == 0:
+                        tempMonth = '0' + str(monthVar)
+                    if os.path.isfile(f'{path}/cache/apod/{tempDay}-{tempMonth}-{yearVar}.png'):
                         apodWin.destroy()
                         apodImgDis = tk.Tk()
-                        dateNow = f'{dayVar}-{monthVar}-{yearVar}'                    
+                        dateNow = f'{tempDay}-{tempMonth}-{yearVar}'                    
                         global img
                         img = ImageTk.PhotoImage(Image.open(f"{path}/cache/apod/{dateNow}.png"))
                         apodImgDis.title('APOD - Astronomy Picture Of The Day')
