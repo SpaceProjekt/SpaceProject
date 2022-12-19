@@ -1,0 +1,4 @@
+0.0.0.0 www.ndtv.com
+0.0.0.0 www.hindustantimes.com
+0.0.0.0 timesofindia.indiatimes.com
+0.0.0.0 www.divyabhaskar.co.in
